@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <script src="/reveal.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <% var opcao = "pessoa"; %>
+    <div>
+        <img src="" alt="">
+        <h2><%= pessoa.nome %></h2>
+        <p><strong>Github:</strong> <%= pessoa.github %></p>
+        <p><strong>LinkedIn:</strong> <%= pessoa.linkedin %></p>
+        <p><strong>Telefone:</strong> <%= pessoa.telefone %></p>
+        <p><strong>Email:</strong> <%= pessoa.email %></p>
+        <p><strong>Endereço:</strong> <%= pessoa.endereco %></p>
+        <p><strong>Descrição</strong></p>
+        <p><%= pessoa.descricao %></p>
+    </div>
+    <div>
+        <h1>formacao academica</h1>
+        <ul>
+            <% formacao.forEach(function(item) { %>
+                <li><%= item.nivel %> - <%= item.instituicao %> (<%= item.ano %>)</li>
+            <% }) %>
+        </ul>
+    </div>
+    <div>
+        <h1>cursos</h1>
+        <ul>
+            <% cursos.forEach(function(item) { %>
+                <li><%= item.nome %> - <%= item.instituicao %> (<%= item.ano %>)</li>
+            <% }) %>
+        </ul>
+    </div>
+    <div>
+        <h1>projetos desenvolvidos</h1>
+        <ul>
+            <% projetos.forEach(function(item) { %>
+                <li><%= item.nome %> - <%= item.descricao %></li>
+            <% }) %>
+        </ul>
+    </div>
+    <div>
+        <h1>competencias tecnicas e interpessoais</h1>
+        <ul>
+            <% competencias.forEach(function(item) { %>
+                <li><%= item %></li>
+            <% }) %>
+        </ul>
+    </div>
+    <div>
+        <h1>links para redes profissionais</h1>
+        <ul>
+            <% links.forEach(function(item) { %>
+                <li><a href="<%= item.url %>"><%= item.nome %></a></li>
+            <% }) %>
+        </ul>
+    </div>
+    <div>
+        <h2>Adicionar novo item</h2>
+        <button onclick="limparFormulario()">Limpar</button>
+        <button onclick="opcaoPessoa()">pessoa</button>
+        <button onclick="opcaoFormacao()">formacao</button>
+        <button onclick="opcaoCurso()">curso</button>
+        <button onclick="opcaoProjeto()">projeto</button>
+        <button onclick="opcaoCompetencia()">competencia</button>
+        <button onclick="opcaoLink()">link</button>
+        <div id="formulario"></div>
+    </div>
+    <div>
+        <h2>Excluir formação acadêmica</h2>
+        <button onclick="excluirFormacao()">Excluir formação</button>
+        <button onclick="excluirCurso()">Excluir curso</button>
+        <button onclick="excluirProjeto()">Excluir projeto</button>
+        <button onclick="excluirCompetencia()">Excluir competencia</button>
+        <button onclick="excluirLink()">Excluir link</button>
+        <div id="formularioExcluir"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    function limparFormulario() {
+        document.getElementById("formulario").innerHTML = "";
+    }
+    function opcaoPessoa() {
+        html = `
+        <form action="/adicionar" method="post">
+            <input type="hidden" name="opcao" value="pessoa">
+                <label>Nome: <input type="text" name="pessoa[nome]" value="<%= pessoa.nome %>"></label><br>
+                <label>Github: <input type="text" name="pessoa[github]" value="<%= pessoa.github %>"></label><br>
+                <label>LinkedIn: <input type="text" name="pessoa[linkedin]" value="<%= pessoa.linkedin %>"></label><br>
+                <label>Telefone: <input type="text" name="pessoa[telefone]" value="<%= pessoa.telefone %>"></label><br>
+                <label>Email: <input type="text" name="pessoa[email]" value="<%= pessoa.email %>"></label><br>
+                <label>Endereço: <input type="text" name="pessoa[endereco]" value="<%= pessoa.endereco %>"></label><br>
+                <label>Descrição: <textarea name="pessoa[descricao]"><%= pessoa.descricao %></textarea></label><br>
+                <button type="submit">Enviar</button>
+            </form>
+        `;
+        document.getElementById("formulario").innerHTML = html;
+    }
+    function opcaoFormacao() {
+        html = `
+        <form action="/adicionar" method="post">
+            <input type="hidden" name="opcao" value="formacao">
+                <label>Nome: <input type="text" name="formacao[nome]"></label><br>
+                <label>Nível: <input type="text" name="formacao[nivel]"></label><br>
+                <label>Instituição: <input type="text" name="formacao[instituicao]"></label><br>
+                <label>Ano: <input type="text" name="formacao[ano]"></label><br>
+                <button type="submit">Enviar</button>
+            </form>
+        `;
+        document.getElementById("formulario").innerHTML = html;
+    }
+    function opcaoCurso() {
+        html = `
+        <form action="/adicionar" method="post">
+            <input type="hidden" name="opcao" value="curso">
+                <label>Nome: <input type="text" name="curso[nome]"></label><br>
+                <label>Instituição: <input type="text" name="curso[instituicao]"></label><br>
+                <label>Ano: <input type="text" name="curso[ano]"></label><br>
+                <button type="submit">Enviar</button>
+            </form>
+        `;
+        document.getElementById("formulario").innerHTML = html;
+    }
+    function opcaoProjeto() {
+        html = `
+        <form action="/adicionar" method="post">
+            <input type="hidden" name="opcao" value="projeto">
+                <label>Nome: <input type="text" name="projeto[nome]"></label><br>
+                <label>Descrição: <input type="text" name="projeto[descricao]"></label><br>
+                <button type="submit">Enviar</button>
+            </form>
+        `;
+        document.getElementById("formulario").innerHTML = html;
+    }
+    function opcaoCompetencia() {
+        html = `
+        <form action="/adicionar" method="post">
+            <input type="hidden" name="opcao" value="competencia">
+                <label>Competência: <input type="text" name="competencia[nome]"></label><br>
+                <button type="submit">Enviar</button>
+            </form>
+        `;
+        document.getElementById("formulario").innerHTML = html;
+    }
+    function opcaoLink() {
+        html = `
+        <form action="/adicionar" method="post">
+            <input type="hidden" name="opcao" value="link">
+                <label>Nome: <input type="text" name="link[nome]"></label><br>
+                <label>URL: <input type="text" name="link[url]"></label><br>
+                <button type="submit">Enviar</button>
+            </form>
+        `;
+        document.getElementById("formulario").innerHTML = html;
+    }
+
+    function excluirLink(){
+        html = `
+        <form action="/excluir" method="post">
+            <select name="id">
+                <% links.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nome %> - <%= item.url %></option>
+                <% }) %>
+            </select>
+            <button type="submit">Excluir</button>
+        </form>
+    `;
+        document.getElementById("formularioExcluir").innerHTML = html;
+    }
+
+    function excluirFormacao(){
+        html = `
+        <form action="/excluirFormacao" method="post">
+            <select name="id">
+                <% formacao.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nivel %> - <%= item.instituicao %> (<%= item.ano %>)</option>
+                <% }) %>
+            </select>
+            <button type="submit">Excluir</button>
+        </form>
+    `;
+        document.getElementById("formularioExcluir").innerHTML = html;
+    }
+
+    function excluirCurso(){
+        html = `
+        <form action="/excluirCurso" method="post">
+            <select name="id">
+                <% cursos.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nome %> - <%= item.instituicao %> (<%= item.ano %>)</option>
+                <% }) %>
+            </select>
+            <button type="submit">Excluir</button>
+        </form>
+    `;
+        document.getElementById("formularioExcluir").innerHTML = html;
+    }
+
+    function excluirProjeto(){
+        html = `
+        <form action="/excluirProjeto" method="post">
+            <select name="id">
+                <% projetos.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nome %> - <%= item.descricao %></option>
+                <% }) %>
+            </select>
+            <button type="submit">Excluir</button>
+        </form>
+    `;
+        document.getElementById("formularioExcluir").innerHTML = html;
+    }
+
+    function excluirCompetencia(){
+        html = `
+        <form action="/excluirCompetencia" method="post">
+            <select name="id">
+                <% competencias.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item %></option>
+                <% }) %>
+            </select>
+            <button type="submit">Excluir</button>
+        </form>
+    `;
+        document.getElementById("formularioExcluir").innerHTML = html;
+    }
+</script>
