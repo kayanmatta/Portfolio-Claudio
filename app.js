@@ -8,13 +8,13 @@ app.use(express.static('public'));
 
 // Armazenamento em memória para os clientes
 var pessoa = {
-    nome: "Ryan Araujo dos Santos",
-    github: "ryan53132",
-    linkedin: "ryan53132",
-    telefone: "(12) 98836-0447",
-    email: "ryan@example.com",
+    nome: "Kayan dos Santos da Matta",
+    github: "kayanmatta",
+    linkedin: "kayanmatta",
+    telefone: "(XX) XXXXX-XXXX",
+    email: "kayan@example.com",
     endereco: "Rua Exemplo, 123",
-    descricao: "sou programador, cursando Análise e Desenvolvimento de Sistemas na fatec a 3 semestres."
+    descricao: "Sou desenvolvedor navegando pelas correntes do conhecimento tecnológico. Assim como as marés moldam a costa, acredito que cada desafio e experiência contribui para moldar minhas habilidades como profissional de tecnologia. Atualmente cursando Análise e Desenvolvimento de Sistemas, mergulho constantemente em novas tecnologias e metodologias ágeis."
 }
 var formacao = [];
 var cursos = [];
@@ -31,7 +31,6 @@ app.get('/', function(req, res) {
 app.post('/adicionar', function(req, res) {
     var opcao = req.body.opcao;
     if (opcao == "pessoa") {
-        pessoa = {};
         pessoa = req.body.pessoa;
     } else if (opcao == "formacao") {
         formacao.push(req.body.formacao);
@@ -47,10 +46,20 @@ app.post('/adicionar', function(req, res) {
     res.redirect('/');
 });
 
-// Rota que exclui um cliente da lista
+
 app.post('/excluir', function(req, res) {
-    var id = req.body.id;
-    links.splice(id, 1);
+    var opcao = req.body.opcao;
+    if (opcao == "formacao") {
+        formacao.splice(req.body.id, 1);
+    } else if (opcao == "curso") {
+        cursos.splice(req.body.id, 1);
+    } else if (opcao == "projeto") {
+        projetos.splice(req.body.id, 1);
+    } else if (opcao == "competencia") {
+        competencias.splice(req.body.id, 1);
+    } else if (opcao == "link") {
+        links.splice(req.body.id, 1);
+    }
     res.redirect('/');
 });
 

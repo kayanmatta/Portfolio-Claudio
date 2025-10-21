@@ -1,91 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
-    <script src="/reveal.js"></script>
+    <title>Portfólio - Kayan dos Santos da Matta</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <% var opcao = "pessoa"; %>
-    <div>
-        <img src="" alt="">
-        <h2><%= pessoa.nome %></h2>
-        <p><strong>Github:</strong> <%= pessoa.github %></p>
-        <p><strong>LinkedIn:</strong> <%= pessoa.linkedin %></p>
-        <p><strong>Telefone:</strong> <%= pessoa.telefone %></p>
-        <p><strong>Email:</strong> <%= pessoa.email %></p>
-        <p><strong>Endereço:</strong> <%= pessoa.endereco %></p>
-        <p><strong>Descrição</strong></p>
-        <p><%= pessoa.descricao %></p>
-    </div>
-    <div>
-        <h1>formacao academica</h1>
-        <ul>
-            <% formacao.forEach(function(item) { %>
-                <li><%= item.nivel %> - <%= item.instituicao %> (<%= item.ano %>)</li>
-            <% }) %>
-        </ul>
-    </div>
-    <div>
-        <h1>cursos</h1>
-        <ul>
-            <% cursos.forEach(function(item) { %>
-                <li><%= item.nome %> - <%= item.instituicao %> (<%= item.ano %>)</li>
-            <% }) %>
-        </ul>
-    </div>
-    <div>
-        <h1>projetos desenvolvidos</h1>
-        <ul>
-            <% projetos.forEach(function(item) { %>
-                <li><%= item.nome %> - <%= item.descricao %></li>
-            <% }) %>
-        </ul>
-    </div>
-    <div>
-        <h1>competencias tecnicas e interpessoais</h1>
-        <ul>
-            <% competencias.forEach(function(item) { %>
-                <li><%= item %></li>
-            <% }) %>
-        </ul>
-    </div>
-    <div>
-        <h1>links para redes profissionais</h1>
-        <ul>
-            <% links.forEach(function(item) { %>
-                <li><a href="<%= item.url %>"><%= item.nome %></a></li>
-            <% }) %>
-        </ul>
-    </div>
-    <div>
-        <h2>Adicionar novo item</h2>
-        <button onclick="limparFormulario()">Limpar</button>
-        <button onclick="opcaoPessoa()">pessoa</button>
-        <button onclick="opcaoFormacao()">formacao</button>
-        <button onclick="opcaoCurso()">curso</button>
-        <button onclick="opcaoProjeto()">projeto</button>
-        <button onclick="opcaoCompetencia()">competencia</button>
-        <button onclick="opcaoLink()">link</button>
-        <div id="formulario"></div>
-    </div>
-    <div>
-        <h2>Excluir formação acadêmica</h2>
-        <button onclick="excluirFormacao()">Excluir formação</button>
-        <button onclick="excluirCurso()">Excluir curso</button>
-        <button onclick="excluirProjeto()">Excluir projeto</button>
-        <button onclick="excluirCompetencia()">Excluir competencia</button>
-        <button onclick="excluirLink()">Excluir link</button>
-        <div id="formularioExcluir"></div>
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-image-container">
+                <img src="/images/foto minha.jpg" alt="Foto de Kayan dos Santos da Matta" class="profile-image">
+            </div>
+            <div class="profile-info">
+                <h1><%= pessoa.nome %></h1>
+                <p><strong>Github:</strong> <%= pessoa.github %></p>
+                <p><strong>LinkedIn:</strong> <%= pessoa.linkedin %></p>
+                <p><strong>Telefone:</strong> <%= pessoa.telefone %></p>
+                <p><strong>Email:</strong> <%= pessoa.email %></p>
+                <p><strong>Endereço:</strong> <%= pessoa.endereco %></p>
+                <div class="description">
+                    <h3>Sobre mim</h3>
+                    <p><%= pessoa.descricao %></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Formação Acadêmica</h2>
+            <ul>
+                <% formacao.forEach(function(item) { %>
+                    <li><%= item.nivel %> - <%= item.instituicao %> (<%= item.ano %>)</li>
+                <% }) %>
+            </ul>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Cursos</h2>
+            <ul>
+                <% cursos.forEach(function(item) { %>
+                    <li><%= item.nome %> - <%= item.instituicao %> (<%= item.ano %>)</li>
+                <% }) %>
+            </ul>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Projetos Desenvolvidos</h2>
+            <ul>
+                <% projetos.forEach(function(item) { %>
+                    <li><%= item.nome %> - <%= item.descricao %></li>
+                <% }) %>
+            </ul>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Competências Técnicas e Interpessoais</h2>
+            <ul>
+                <% competencias.forEach(function(item) { %>
+                    <li><%= item %></li>
+                <% }) %>
+            </ul>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Links para Redes Profissionais</h2>
+            <ul>
+                <% links.forEach(function(item) { %>
+                    <li><a href="<%= item.url %>"><%= item.nome %></a></li>
+                <% }) %>
+            </ul>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Adicionar novo item</h2>
+            <button onclick="limparFormularioInserir()">Limpar</button>
+            <button onclick="opcaoPessoa()">Pessoa</button>
+            <button onclick="opcaoFormacao()">Formacao</button>
+            <button onclick="opcaoCurso()">Curso</button>
+            <button onclick="opcaoProjeto()">Projeto</button>
+            <button onclick="opcaoCompetencia()">Competencia</button>
+            <button onclick="opcaoLink()">Link</button>
+            <div id="formulario"></div>
+        </div>
+        
+        <div class="section-card">
+            <h2 class="section-title">Excluir itens</h2>
+            <button onclick="limparFormularioExcluir()">Limpar</button>
+            <button onclick="excluirFormacao()">Excluir formação</button>
+            <button onclick="excluirCurso()">Excluir curso</button>
+            <button onclick="excluirProjeto()">Excluir projeto</button>
+            <button onclick="excluirCompetencia()">Excluir competencia</button>
+            <button onclick="excluirLink()">Excluir link</button>
+            <div id="formularioExcluir"></div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Kayan dos Santos da Matta - Navegando pelas correntes do conhecimento</p>
+        </div>
     </div>
 </body>
 </html>
 
 <script>
-    function limparFormulario() {
+    function limparFormularioInserir() {
         document.getElementById("formulario").innerHTML = "";
+    }
+    function limparFormularioExcluir() {
+        document.getElementById("formularioExcluir").innerHTML = "";
     }
     function opcaoPessoa() {
         html = `
@@ -133,7 +155,7 @@
         <form action="/adicionar" method="post">
             <input type="hidden" name="opcao" value="projeto">
                 <label>Nome: <input type="text" name="projeto[nome]"></label><br>
-                <label>Descrição: <input type="text" name="projeto[descricao]"></label><br>
+                <label>Descrição: <textarea name="projeto[descricao]"></textarea></label><br>
                 <button type="submit">Enviar</button>
             </form>
         `;
@@ -143,7 +165,7 @@
         html = `
         <form action="/adicionar" method="post">
             <input type="hidden" name="opcao" value="competencia">
-                <label>Competência: <input type="text" name="competencia[nome]"></label><br>
+                <label>Competência: <textarea name="competencia[nome]"></textarea></label><br>
                 <button type="submit">Enviar</button>
             </form>
         `;
@@ -164,6 +186,7 @@
     function excluirLink(){
         html = `
         <form action="/excluir" method="post">
+              <input type="hidden" name="opcao" value="link">
             <select name="id">
                 <% links.forEach(function(item, index) { %>
                     <option value="<%= index %>"><%= item.nome %> - <%= item.url %></option>
@@ -177,7 +200,8 @@
 
     function excluirFormacao(){
         html = `
-        <form action="/excluirFormacao" method="post">
+        <form action="/excluir" method="post">
+            <input type="hidden" name="opcao" value="formacao">
             <select name="id">
                 <% formacao.forEach(function(item, index) { %>
                     <option value="<%= index %>"><%= item.nivel %> - <%= item.instituicao %> (<%= item.ano %>)</option>
@@ -191,7 +215,8 @@
 
     function excluirCurso(){
         html = `
-        <form action="/excluirCurso" method="post">
+        <form action="/excluir" method="post">
+            <input type="hidden" name="opcao" value="curso">
             <select name="id">
                 <% cursos.forEach(function(item, index) { %>
                     <option value="<%= index %>"><%= item.nome %> - <%= item.instituicao %> (<%= item.ano %>)</option>
@@ -205,7 +230,8 @@
 
     function excluirProjeto(){
         html = `
-        <form action="/excluirProjeto" method="post">
+        <form action="/excluir" method="post">
+            <input type="hidden" name="opcao" value="projeto">
             <select name="id">
                 <% projetos.forEach(function(item, index) { %>
                     <option value="<%= index %>"><%= item.nome %> - <%= item.descricao %></option>
@@ -219,7 +245,8 @@
 
     function excluirCompetencia(){
         html = `
-        <form action="/excluirCompetencia" method="post">
+        <form action="/excluir" method="post">
+            <input type="hidden" name="opcao" value="competencia">
             <select name="id">
                 <% competencias.forEach(function(item, index) { %>
                     <option value="<%= index %>"><%= item %></option>
