@@ -72,7 +72,7 @@ html, body {
     object-fit: cover;
     border: 3px solid #00ff9d;
     box-shadow: 0 0 20px rgba(0, 200, 150, 0.4);
-    animation: pulse 1ms infinite ease-in-out;
+    animation: pulse 2s infinite ease-in-out;
     overflow: hidden;
     display: flex;
     align-items: center;
