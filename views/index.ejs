@@ -58,7 +58,7 @@
             <h2 class="section-title">Competências Técnicas e Interpessoais</h2>
             <ul>
                 <% competencias.forEach(function(item) { %>
-                    <li><%= item %></li>
+                    <li><%= typeof item === 'object' ? item.nome : item %></li>
                 <% }) %>
             </ul>
         </div>
@@ -95,19 +95,47 @@
             <div id="formularioExcluir"></div>
         </div>
         
+        <div class="section-card">
+            <h2 class="section-title">Editar itens</h2>
+            <button onclick="limparFormularioExcluir()">Limpar</button>
+            <button onclick="editarFormacao()">Editar formação</button>
+            <button onclick="editarCurso()">Editar curso</button>
+            <button onclick="editarProjeto()">Editar projeto</button>
+            <button onclick="editarCompetencia()">Editar competencia</button>
+            <button onclick="editarLink()">Editar link</button>
+            <div id="formularioEditar"></div>
+        </div>
+        
         <div class="footer">
             <p>© 2025 Kayan dos Santos da Matta - Navegando pelas correntes do conhecimento</p>
         </div>
+    </div>
+    
+    <!-- Dados para uso no JavaScript -->
+    <div id="dados-js" style="display:none;">
+        <span id="formacao-data"><%= JSON.stringify(formacao) %></span>
+        <span id="cursos-data"><%= JSON.stringify(cursos) %></span>
+        <span id="projetos-data"><%= JSON.stringify(projetos) %></span>
+        <span id="competencias-data"><%= JSON.stringify(competencias) %></span>
+        <span id="links-data"><%= JSON.stringify(links) %></span>
     </div>
 </body>
 </html>
 
 <script>
+    // Inicializar dados a partir do HTML
+    var dadosFormacao = JSON.parse(document.getElementById('formacao-data').textContent);
+    var dadosCursos = JSON.parse(document.getElementById('cursos-data').textContent);
+    var dadosProjetos = JSON.parse(document.getElementById('projetos-data').textContent);
+    var dadosCompetencias = JSON.parse(document.getElementById('competencias-data').textContent);
+    var dadosLinks = JSON.parse(document.getElementById('links-data').textContent);
+    
     function limparFormularioInserir() {
         document.getElementById("formulario").innerHTML = "";
     }
     function limparFormularioExcluir() {
         document.getElementById("formularioExcluir").innerHTML = "";
+        document.getElementById("formularioEditar").innerHTML = "";
     }
     function opcaoPessoa() {
         html = `
@@ -165,7 +193,7 @@
         html = `
         <form action="/adicionar" method="post">
             <input type="hidden" name="opcao" value="competencia">
-                <label>Competência: <textarea name="competencia[nome]"></textarea></label><br>
+                <label>Competência: <textarea name="competencia"></textarea></label><br>
                 <button type="submit">Enviar</button>
             </form>
         `;
@@ -185,7 +213,7 @@
 
     function excluirLink(){
         html = `
-        <form action="/excluir" method="post">
+        <form action="/excluir?_method=DELETE" method="post">
               <input type="hidden" name="opcao" value="link">
             <select name="id">
                 <% links.forEach(function(item, index) { %>
@@ -200,7 +228,7 @@
 
     function excluirFormacao(){
         html = `
-        <form action="/excluir" method="post">
+        <form action="/excluir?_method=DELETE" method="post">
             <input type="hidden" name="opcao" value="formacao">
             <select name="id">
                 <% formacao.forEach(function(item, index) { %>
@@ -215,7 +243,7 @@
 
     function excluirCurso(){
         html = `
-        <form action="/excluir" method="post">
+        <form action="/excluir?_method=DELETE" method="post">
             <input type="hidden" name="opcao" value="curso">
             <select name="id">
                 <% cursos.forEach(function(item, index) { %>
@@ -230,7 +258,7 @@
 
     function excluirProjeto(){
         html = `
-        <form action="/excluir" method="post">
+        <form action="/excluir?_method=DELETE" method="post">
             <input type="hidden" name="opcao" value="projeto">
             <select name="id">
                 <% projetos.forEach(function(item, index) { %>
@@ -245,7 +273,7 @@
 
     function excluirCompetencia(){
         html = `
-        <form action="/excluir" method="post">
+        <form action="/excluir?_method=DELETE" method="post">
             <input type="hidden" name="opcao" value="competencia">
             <select name="id">
                 <% competencias.forEach(function(item, index) { %>
@@ -256,5 +284,171 @@
         </form>
     `;
         document.getElementById("formularioExcluir").innerHTML = html;
+    }
+
+    // Funções para editar itens
+    function editarFormacao(){
+        html = `
+        <form action="/editar?_method=PUT" method="post">
+            <input type="hidden" name="opcao" value="formacao">
+            <select name="id" onchange="preencherFormacao(this)">
+                <option value="">Selecione uma formação</option>
+                <% formacao.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nivel %> - <%= item.instituicao %> (<%= item.ano %>)</option>
+                <% }) %>
+            </select>
+            <div id="formFormacao" style="display:none;">
+                <label>Nome: <input type="text" name="formacao[nome]" id="formacaoNome"></label><br>
+                <label>Nível: <input type="text" name="formacao[nivel]" id="formacaoNivel"></label><br>
+                <label>Instituição: <input type="text" name="formacao[instituicao]" id="formacaoInstituicao"></label><br>
+                <label>Ano: <input type="text" name="formacao[ano]" id="formacaoAno"></label><br>
+            </div>
+            <button type="submit">Atualizar</button>
+        </form>
+    `;
+        document.getElementById("formularioEditar").innerHTML = html;
+    }
+
+    function preencherFormacao(select) {
+        var id = select.value;
+        if (id !== "") {
+            var item = dadosFormacao[id];
+            document.getElementById("formacaoNome").value = item.nome || "";
+            document.getElementById("formacaoNivel").value = item.nivel || "";
+            document.getElementById("formacaoInstituicao").value = item.instituicao || "";
+            document.getElementById("formacaoAno").value = item.ano || "";
+            document.getElementById("formFormacao").style.display = "block";
+        } else {
+            document.getElementById("formFormacao").style.display = "none";
+        }
+    }
+
+    function editarCurso(){
+        html = `
+        <form action="/editar?_method=PUT" method="post">
+            <input type="hidden" name="opcao" value="curso">
+            <select name="id" onchange="preencherCurso(this)">
+                <option value="">Selecione um curso</option>
+                <% cursos.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nome %> - <%= item.instituicao %> (<%= item.ano %>)</option>
+                <% }) %>
+            </select>
+            <div id="formCurso" style="display:none;">
+                <label>Nome: <input type="text" name="curso[nome]" id="cursoNome"></label><br>
+                <label>Instituição: <input type="text" name="curso[instituicao]" id="cursoInstituicao"></label><br>
+                <label>Ano: <input type="text" name="curso[ano]" id="cursoAno"></label><br>
+            </div>
+            <button type="submit">Atualizar</button>
+        </form>
+    `;
+        document.getElementById("formularioEditar").innerHTML = html;
+    }
+
+    function preencherCurso(select) {
+        var id = select.value;
+        if (id !== "") {
+            var item = dadosCursos[id];
+            document.getElementById("cursoNome").value = item.nome || "";
+            document.getElementById("cursoInstituicao").value = item.instituicao || "";
+            document.getElementById("cursoAno").value = item.ano || "";
+            document.getElementById("formCurso").style.display = "block";
+        } else {
+            document.getElementById("formCurso").style.display = "none";
+        }
+    }
+
+    function editarProjeto(){
+        html = `
+        <form action="/editar?_method=PUT" method="post">
+            <input type="hidden" name="opcao" value="projeto">
+            <select name="id" onchange="preencherProjeto(this)">
+                <option value="">Selecione um projeto</option>
+                <% projetos.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nome %> - <%= item.descricao %></option>
+                <% }) %>
+            </select>
+            <div id="formProjeto" style="display:none;">
+                <label>Nome: <input type="text" name="projeto[nome]" id="projetoNome"></label><br>
+                <label>Descrição: <textarea name="projeto[descricao]" id="projetoDescricao"></textarea></label><br>
+            </div>
+            <button type="submit">Atualizar</button>
+        </form>
+    `;
+        document.getElementById("formularioEditar").innerHTML = html;
+    }
+
+    function preencherProjeto(select) {
+        var id = select.value;
+        if (id !== "") {
+            var item = dadosProjetos[id];
+            document.getElementById("projetoNome").value = item.nome || "";
+            document.getElementById("projetoDescricao").value = item.descricao || "";
+            document.getElementById("formProjeto").style.display = "block";
+        } else {
+            document.getElementById("formProjeto").style.display = "none";
+        }
+    }
+
+    function editarCompetencia(){
+        html = `
+        <form action="/editar?_method=PUT" method="post">
+            <input type="hidden" name="opcao" value="competencia">
+            <select name="id" onchange="preencherCompetencia(this)">
+                <option value="">Selecione uma competência</option>
+                <% competencias.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= typeof item === 'object' ? item.nome : item %></option>
+                <% }) %>
+            </select>
+            <div id="formCompetencia" style="display:none;">
+                <label>Competência: <textarea name="competencia" id="competenciaNome"></textarea></label><br>
+            </div>
+            <button type="submit">Atualizar</button>
+        </form>
+    `;
+        document.getElementById("formularioEditar").innerHTML = html;
+    }
+
+    function preencherCompetencia(select) {
+        var id = select.value;
+        if (id !== "") {
+            var item = dadosCompetencias[id];
+            // Tratar tanto objetos quanto strings
+            document.getElementById("competenciaNome").value = typeof item === 'object' ? item.nome : item;
+            document.getElementById("formCompetencia").style.display = "block";
+        } else {
+            document.getElementById("formCompetencia").style.display = "none";
+        }
+    }
+
+    function editarLink(){
+        html = `
+        <form action="/editar?_method=PUT" method="post">
+            <input type="hidden" name="opcao" value="link">
+            <select name="id" onchange="preencherLink(this)">
+                <option value="">Selecione um link</option>
+                <% links.forEach(function(item, index) { %>
+                    <option value="<%= index %>"><%= item.nome %> - <%= item.url %></option>
+                <% }) %>
+            </select>
+            <div id="formLink" style="display:none;">
+                <label>Nome: <input type="text" name="link[nome]" id="linkNome"></label><br>
+                <label>URL: <input type="text" name="link[url]" id="linkUrl"></label><br>
+            </div>
+            <button type="submit">Atualizar</button>
+        </form>
+    `;
+        document.getElementById("formularioEditar").innerHTML = html;
+    }
+
+    function preencherLink(select) {
+        var id = select.value;
+        if (id !== "") {
+            var item = dadosLinks[id];
+            document.getElementById("linkNome").value = item.nome || "";
+            document.getElementById("linkUrl").value = item.url || "";
+            document.getElementById("formLink").style.display = "block";
+        } else {
+            document.getElementById("formLink").style.display = "none";
+        }
     }
 </script>
